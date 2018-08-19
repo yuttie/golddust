@@ -104,7 +104,17 @@
     const r = radius * 2**(-scaleFactor);
     graphics.beginFill(fillColor, 0.1);
     data.forEach(d => {
-      drawPoint(graphics, d.x, d.y, r);
+      if (!d.match) {
+        drawPoint(graphics, d.x, d.y, r);
+      }
+    });
+    graphics.endFill();
+
+    graphics.beginFill(0xff0000);
+    data.forEach(d => {
+      if (d.match) {
+        drawPoint(graphics, d.x, d.y, r);
+      }
     });
     graphics.endFill();
 
@@ -140,9 +150,17 @@
 
     if (query == '') {
       document.querySelector("#message").innerText = 'empty';
+      data.forEach(d => {
+        d.match = false;
+      });
     }
     else {
       document.querySelector("#message").innerText = 'not empty';
+      const re = new RegExp(query);
+      data.forEach(d => {
+        d.match = re.test(d.word);
+      });
+      updateScene(data);
     }
   });
 
