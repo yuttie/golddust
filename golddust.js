@@ -172,30 +172,32 @@
   });
 
   // Zoom
+  function zoom(ratio, cx_canvas, cy_canvas) {
+    scaleFactor += ratio;
+    const cx_stage = cx_canvas - app.stage.x;
+    const cy_stage = cy_canvas - app.stage.y;
+    mainLayer.x = 2**ratio * (mainLayer.x - cx_stage) + cx_stage;
+    mainLayer.y = 2**ratio * (mainLayer.y - cy_stage) + cy_stage;
+    updateScene(data);
+  }
   function onWheel(e) {
     e.stopPropagation();
     e.preventDefault();
+
+    // Center of zoom
+    const cx_canvas = e.clientX - e.target.clientLeft;
+    const cy_canvas = e.clientY - e.target.clientTop;
 
     // Convert the amount into a scale factor
     const delta =  e.deltaY       // 'wheel' event
                || -e.wheelDeltaY  // Webkit's mousewheel event
                || -e.wheelDelta;  // other's mousewheel event
-    let relativeScale = null;
     if (delta > 0) {
-      scaleFactor -= 0.1;
-      relativeScale = 2**(-0.1);
+      zoom(-0.1, cx_canvas, cy_canvas);
     }
     else if (delta < 0) {
-      scaleFactor += 0.1;
-      relativeScale = 2**0.1;
+      zoom(0.1, cx_canvas, cy_canvas);
     }
-    const ex_canvas = e.clientX - e.target.clientLeft;
-    const ey_canvas = e.clientY - e.target.clientTop;
-    const ex_stage = ex_canvas - app.stage.x;
-    const ey_stage = ey_canvas - app.stage.y;
-    mainLayer.x = relativeScale * (mainLayer.x - ex_stage) + ex_stage;
-    mainLayer.y = relativeScale * (mainLayer.y - ey_stage) + ey_stage;
-    updateScene(data);
   }
   app.view.addEventListener("wheel", onWheel);
   app.view.addEventListener("mousewheel", onWheel);
