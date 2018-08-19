@@ -58,7 +58,7 @@
   window.addEventListener("DOMContentLoaded", onResize);
 
   // Scene
-  const textStyle = new PIXI.TextStyle({
+  const defaultTextStyle = new PIXI.TextStyle({
     fontSize: 16,
     fill: "#444",
   });
@@ -87,7 +87,7 @@
 
     // Texts
     data.forEach(d => {
-      let text = new PIXI.Text(d.word, textStyle);
+      let text = new PIXI.Text(d.word, defaultTextStyle.clone());
       text.anchor.set(0, 0.6);
       text.x = d.x + 0;
       text.y = d.y + 0;
@@ -123,6 +123,12 @@
       let text = d.textGraphics;
       text.scale.x = 2**(-scaleFactor);
       text.scale.y = 2**(-scaleFactor);
+      if (d.match) {
+        text.style.fill = '#fff';
+      }
+      else {
+        text.style.fill = '#444';
+      }
     });
 
     // Layer
