@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title>GoldDust</title>
+    <style>
+      html {
+          overflow: hidden;
+      }
+      canvas {
+          position: absolute;
+          top: 0;
+          left: 0;
+      }
+      #footer {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+      }
+      #control-box {
+          margin: 0.25em auto;
+          position: relative;
+          width: 100%;
+          max-width: 25em;
+          bottom: 2em;
+      }
+      #query {
+          position: relative;
+          font-size: 1.5em;
+          background: rgba(255, 255, 255, 0.1);
+          border: none;
+          border-bottom: 4px solid rgba(200, 200, 200, 0.1);
+          padding: 0.2em 0.5em;
+          padding-bottom: 0;
+          width: 100%;
+          box-sizing: border-box;
+          font-family: serif;
+          font-weight: bold;
+          color: #888888;
+          transition: all 300ms;
+      }
+      #query:focus {
+          background: rgba(252, 252, 252, 0.2);
+          border-bottom: 4px solid #334969;
+          outline: none;
+          color: #dddddd;
+      }
+      #message {
+          color: #ddd;
+          position: absolute;
+          top: 50%;
+          right: 0.25em;
+          margin-top: -0.5em;
+          pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="footer">
+      <div id="control-box">
+        <input type="text" id="query" autofocus="autofocus" placeholder="Search" />
+        <div id="message"></div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.1/pixi.min.js"></script>
+    <script src="golddust.js"></script>
+  </body>
+</html>
