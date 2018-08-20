@@ -165,6 +165,9 @@
       const re = new RegExp(query);
       data.forEach(d => {
         d.match = re.test(d.word);
+        if (d.match) {
+          texts.setChildIndex(d.textGraphics, texts.children.length - 1);
+        }
       });
       updateScene(data);
     }
