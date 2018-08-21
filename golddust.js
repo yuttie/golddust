@@ -30,8 +30,6 @@
   });
 
   let [width, height] = getCanvasSize();
-  const initScaleFactor = 3.0;
-  let scaleFactor = initScaleFactor;
 
   // Initialize the application
   const app = new PIXI.Application({
@@ -60,6 +58,16 @@
 
   window.addEventListener("unload", e => {
     app.destroy(false, {children: true, texture: true, baseTexture: true});
+  });
+
+  // dat.GUI
+  const initScaleFactor = 3.0;
+  const config = {
+    scaleFactor: initScaleFactor,
+  };
+  const gui = new dat.GUI();
+  gui.add(config, 'scaleFactor').onChange(v => {
+    updateScene(data);
   });
 
   // Scene
@@ -123,13 +131,13 @@
     data.forEach(d => {
       // Points
       const point = d.pointGraphics;
-      point.x = 2**scaleFactor * d.x;
-      point.y = 2**scaleFactor * d.y;
+      point.x = 2**config.scaleFactor * d.x;
+      point.y = 2**config.scaleFactor * d.y;
 
       // Texts
       const text = d.textGraphics;
-      text.x = 2**scaleFactor * d.x + 4;
-      text.y = 2**scaleFactor * d.y;
+      text.x = 2**config.scaleFactor * d.x + 4;
+      text.y = 2**config.scaleFactor * d.y;
     });
   }
 
@@ -144,10 +152,6 @@
   })
 
   // Query
-  document.addEventListener("keydown", function() {
-    document.querySelector("#query").focus();
-  });
-
   document.querySelector("#query").addEventListener("input", function() {
     const query = this.value;
 
@@ -202,7 +206,7 @@
 
   // Zoom
   function zoom_by(delta, cx_canvas, cy_canvas) {
-    scaleFactor += delta;
+    config.scaleFactor += delta;
     const cx_stage = cx_canvas - app.stage.x;
     const cy_stage = cy_canvas - app.stage.y;
     mainLayer.x = 2**delta * (mainLayer.x - cx_stage) + cx_stage;
