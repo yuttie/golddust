@@ -69,7 +69,7 @@
   const gui = new dat.GUI();
   gui.add(config, 'scaleFactor').onChange(v => {
     updateScene(data);
-  });
+  }).listen();
   gui.add(config, 'showTexts').onChange(v => {
     texts.visible = v;
   });
