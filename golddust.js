@@ -64,10 +64,14 @@
   const initScaleFactor = 3.0;
   const config = {
     scaleFactor: initScaleFactor,
+    showTexts: false,
   };
   const gui = new dat.GUI();
   gui.add(config, 'scaleFactor').onChange(v => {
     updateScene(data);
+  });
+  gui.add(config, 'showTexts').onChange(v => {
+    texts.visible = v;
   });
 
   // Scene
@@ -83,6 +87,7 @@
   const fillColor = 0xffdd00;
   const highlightColor = 0xff0000;
   const texts = new PIXI.Container();
+  texts.visible = config.showTexts;
   mainLayer.addChild(texts);
   const points = new PIXI.Container();
   mainLayer.addChild(points);
