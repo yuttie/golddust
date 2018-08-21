@@ -30,7 +30,8 @@
   });
 
   let [width, height] = getCanvasSize();
-  let scaleFactor = 3.0;
+  const initScaleFactor = 3.0;
+  let scaleFactor = initScaleFactor;
 
   // Initialize the application
   const app = new PIXI.Application({
