@@ -57,6 +57,10 @@
   window.addEventListener("resize", onResize);
   window.addEventListener("DOMContentLoaded", onResize);
 
+  window.addEventListener("unload", e => {
+    app.destroy(false, {children: true, texture: true, baseTexture: true});
+  });
+
   // Scene
   const defaultTextStyle = new PIXI.TextStyle({
     fontSize: 16,
