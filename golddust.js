@@ -62,6 +62,7 @@
 
   // dat.GUI
   const initScaleFactor = 3.0;
+  const zoomStep = 0.25;
   const config = {
     dataSize: '',
     scaleFactor: initScaleFactor,
@@ -234,10 +235,10 @@
                || -e.wheelDeltaY  // Webkit's mousewheel event
                || -e.wheelDelta;  // other's mousewheel event
     if (delta > 0) {
-      zoom_by(-0.25, cx_canvas, cy_canvas);
+      zoom_by(-zoomStep, cx_canvas, cy_canvas);
     }
     else if (delta < 0) {
-      zoom_by(+0.25, cx_canvas, cy_canvas);
+      zoom_by(+zoomStep, cx_canvas, cy_canvas);
     }
   }
   app.view.addEventListener("wheel", onWheel);
