@@ -69,76 +69,64 @@
   });
   const radius = 1;
   const fillColor = 0xffdd00;
+  const highlightColor = 0xff0000;
   const texts = new PIXI.Container();
   mainLayer.addChild(texts);
-  const graphics = new PIXI.Graphics();
-  graphics.interactive = true;
-  graphics.buttonMode = true;
-  mainLayer.addChild(graphics);
-  function drawPoint(graphics, x, y, r) {
-    graphics.drawStar(x, y, 3, r, r, 0);
-  }
+  const points = new PIXI.Container();
+  mainLayer.addChild(points);
+  const pointTexture = (() => {
+    const g = new PIXI.Graphics();
+    g.beginFill(fillColor, 0.1);
+    g.drawStar(0, 0, 3, radius, radius, 0);
+    g.endFill();
+    return g.generateCanvasTexture();
+  })();
+  const highlightedPointTexture = (() => {
+    const g = new PIXI.Graphics();
+    g.beginFill(highlightColor);
+    g.drawStar(0, 0, 3, radius, radius, 0);
+    g.endFill();
+    return g.generateCanvasTexture();
+  })();
   function initScene(data) {
-    graphics.clear();
+    // Clear
+    for (const point of points.children) {
+      point.destroy();
+    }
+    for (const text of texts.children) {
+      text.destroy();
+    }
+    points.removeChildren();
     texts.removeChildren();
 
-    // Points
-    const r = radius * 2**(-scaleFactor);
-    graphics.beginFill(fillColor, 0.1);
+    // Generate
     data.forEach(d => {
-      drawPoint(graphics, d.x, d.y, r);
-    });
-    graphics.endFill();
+      // Points
+      const point = new PIXI.Sprite(pointTexture);
+      point.interactive = true;
+      point.buttonMode = true;
+      points.addChild(point);
+      d.pointGraphics = point;
 
-    // Texts
-    data.forEach(d => {
-      let text = new PIXI.Text(d.word, defaultTextStyle.clone());
+      // Texts
+      const text = new PIXI.Text(d.word, defaultTextStyle.clone());
       text.anchor.set(0, 0.6);
-      text.x = d.x + 0;
-      text.y = d.y + 0;
-      text.scale.x = 2**(-scaleFactor);
-      text.scale.y = 2**(-scaleFactor);
       texts.addChild(text);
       d.textGraphics = text;
     });
   }
   function updateScene(data) {
-    graphics.clear();
-
-    // Points
-    const r = radius * 2**(-scaleFactor);
-    graphics.beginFill(fillColor, 0.1);
     data.forEach(d => {
-      if (!d.match) {
-        drawPoint(graphics, d.x, d.y, r);
-      }
-    });
-    graphics.endFill();
+      // Points
+      const point = d.pointGraphics;
+      point.x = 2**scaleFactor * d.x;
+      point.y = 2**scaleFactor * d.y;
 
-    graphics.beginFill(0xff0000);
-    data.forEach(d => {
-      if (d.match) {
-        drawPoint(graphics, d.x, d.y, r);
-      }
+      // Texts
+      const text = d.textGraphics;
+      text.x = 2**scaleFactor * d.x;
+      text.y = 2**scaleFactor * d.y;
     });
-    graphics.endFill();
-
-    // Texts
-    data.forEach(d => {
-      let text = d.textGraphics;
-      text.scale.x = 2**(-scaleFactor);
-      text.scale.y = 2**(-scaleFactor);
-      if (d.match) {
-        text.style.fill = '#fff';
-      }
-      else {
-        text.style.fill = '#444';
-      }
-    });
-
-    // Layer
-    mainLayer.scale.x = 2**scaleFactor;
-    mainLayer.scale.y = 2**scaleFactor;
   }
 
   // Dataset
@@ -169,12 +157,16 @@
       document.querySelector("#message").innerText = 'not empty';
       const re = new RegExp(query);
       data.forEach(d => {
-        d.match = re.test(d.word);
-        if (d.match) {
+        if (re.test(d.word)) {
+          d.pointGraphics.texture = highlightedPointTexture;
+          d.textGraphics.style.fill = '#fff';
           texts.setChildIndex(d.textGraphics, texts.children.length - 1);
         }
+        else {
+          d.pointGraphics.texture = pointTexture;
+          d.textGraphics.style.fill = '#444';
+        }
       });
-      updateScene(data);
     }
   });
 
