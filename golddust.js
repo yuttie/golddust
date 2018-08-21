@@ -63,10 +63,12 @@
   // dat.GUI
   const initScaleFactor = 3.0;
   const config = {
+    dataSize: '',
     scaleFactor: initScaleFactor,
     showTexts: false,
   };
   const gui = new dat.GUI();
+  gui.add(config, 'dataSize').listen();
   gui.add(config, 'scaleFactor').onChange(v => {
     updateScene(data);
   }).listen();
@@ -151,6 +153,7 @@
   fetch('dataset.json').then(res => {
     res.json().then(json => {
       data = json;
+      config.dataSize = data.length.toString();
       initScene(data);
       updateScene(data);
     });
