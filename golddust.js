@@ -61,7 +61,7 @@
   });
 
   // dat.GUI
-  const initScaleFactor = 3.0;
+  const initScaleFactor = 5.0;
   const zoomStep = 0.25;
   const config = {
     dataSize: '',
