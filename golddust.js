@@ -63,9 +63,13 @@
   });
 
   // Scene
-  const defaultTextStyle = new PIXI.TextStyle({
+  const normalTextStyle = new PIXI.TextStyle({
     fontSize: 16,
     fill: "#444",
+  });
+  const highlightedTextStyle = new PIXI.TextStyle({
+    fontSize: 16,
+    fill: "#fff",
   });
   const radius = 1;
   const fillColor = 0xffdd00;
@@ -109,7 +113,7 @@
       d.pointGraphics = point;
 
       // Texts
-      const text = new PIXI.Text(d.word, defaultTextStyle.clone());
+      const text = new PIXI.Text(d.word, normalTextStyle);
       text.anchor.set(0, 0.6);
       texts.addChild(text);
       d.textGraphics = text;
@@ -150,7 +154,8 @@
     if (query == '') {
       document.querySelector("#message").innerText = 'empty';
       data.forEach(d => {
-        d.match = false;
+        d.pointGraphics.texture = pointTexture;
+        d.textGraphics.style = normalTextStyle;
       });
     }
     else {
@@ -159,12 +164,12 @@
       data.forEach(d => {
         if (re.test(d.word)) {
           d.pointGraphics.texture = highlightedPointTexture;
-          d.textGraphics.style.fill = '#fff';
+          d.textGraphics.style = highlightedTextStyle;
           texts.setChildIndex(d.textGraphics, texts.children.length - 1);
         }
         else {
           d.pointGraphics.texture = pointTexture;
-          d.textGraphics.style.fill = '#444';
+          d.textGraphics.style = normalTextStyle;
         }
       });
     }
