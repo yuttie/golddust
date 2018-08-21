@@ -7,15 +7,15 @@
 
   function getopt(f) {
     window.location.search.slice(1).split("&").forEach(function(param) {
-      var kv = param.split("=");
-      var key = decodeURIComponent(kv[0]);
-      var value = decodeURIComponent(kv[1]);
+      const kv = param.split("=");
+      const key = decodeURIComponent(kv[0]);
+      const value = decodeURIComponent(kv[1]);
       f(key, value);
     });
   }
 
-  var data_name = "dataset.json";
-  var limit = 100;
+  const data_name = "dataset.json";
+  const limit = 100;
   getopt(function(key, value) {
     switch (key) {
     case "limit":
