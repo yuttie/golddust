@@ -67,7 +67,7 @@
     fontSize: 16,
     fill: "#444",
   });
-  const radius = 4;
+  const radius = 1;
   const fillColor = 0xffdd00;
   const texts = new PIXI.Container();
   mainLayer.addChild(texts);
