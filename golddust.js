@@ -201,12 +201,12 @@
   });
 
   // Zoom
-  function zoom(ratio, cx_canvas, cy_canvas) {
-    scaleFactor += ratio;
+  function zoom_by(delta, cx_canvas, cy_canvas) {
+    scaleFactor += delta;
     const cx_stage = cx_canvas - app.stage.x;
     const cy_stage = cy_canvas - app.stage.y;
-    mainLayer.x = 2**ratio * (mainLayer.x - cx_stage) + cx_stage;
-    mainLayer.y = 2**ratio * (mainLayer.y - cy_stage) + cy_stage;
+    mainLayer.x = 2**delta * (mainLayer.x - cx_stage) + cx_stage;
+    mainLayer.y = 2**delta * (mainLayer.y - cy_stage) + cy_stage;
     updateScene(data);
   }
   function onWheel(e) {
@@ -222,10 +222,10 @@
                || -e.wheelDeltaY  // Webkit's mousewheel event
                || -e.wheelDelta;  // other's mousewheel event
     if (delta > 0) {
-      zoom(-0.25, cx_canvas, cy_canvas);
+      zoom_by(-0.25, cx_canvas, cy_canvas);
     }
     else if (delta < 0) {
-      zoom(+0.25, cx_canvas, cy_canvas);
+      zoom_by(+0.25, cx_canvas, cy_canvas);
     }
   }
   app.view.addEventListener("wheel", onWheel);
