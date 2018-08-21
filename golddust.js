@@ -87,7 +87,7 @@
     fill: "#fff",
   });
   const radius = 1;
-  const fillColor = 0xffdd00;
+  const fillColor = 0xffaa33;
   const highlightColor = 0xff0000;
   const texts = new PIXI.Container();
   texts.visible = config.showTexts;
@@ -96,7 +96,7 @@
   mainLayer.addChild(points);
   const pointTexture = (() => {
     const g = new PIXI.Graphics();
-    g.beginFill(fillColor, 0.5);
+    g.beginFill(fillColor);
     g.drawStar(0, 0, 3, radius, radius, 0);
     g.endFill();
     return g.generateCanvasTexture();
@@ -123,6 +123,7 @@
     data.forEach(d => {
       // Points
       const point = new PIXI.Sprite(pointTexture);
+      point.blendMode = PIXI.BLEND_MODES.ADD;
       point.interactive = true;
       point.buttonMode = true;
       points.addChild(point);
