@@ -72,7 +72,7 @@
   gui.add(config, 'dataSize').listen();
   gui.add(config, 'scaleFactor').onChange(v => {
     updateScene(data);
-  }).listen();
+  }).step(zoomStep).listen();
   gui.add(config, 'showTexts').onChange(v => {
     texts.visible = v;
   });
