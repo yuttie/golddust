@@ -80,7 +80,7 @@
   mainLayer.addChild(points);
   const pointTexture = (() => {
     const g = new PIXI.Graphics();
-    g.beginFill(fillColor, 0.1);
+    g.beginFill(fillColor, 0.5);
     g.drawStar(0, 0, 3, radius, radius, 0);
     g.endFill();
     return g.generateCanvasTexture();
@@ -114,7 +114,7 @@
 
       // Texts
       const text = new PIXI.Text(d.word, normalTextStyle);
-      text.anchor.set(0, 0.6);
+      text.anchor.set(0, 0.5);
       texts.addChild(text);
       d.textGraphics = text;
     });
@@ -128,7 +128,7 @@
 
       // Texts
       const text = d.textGraphics;
-      text.x = 2**scaleFactor * d.x;
+      text.x = 2**scaleFactor * d.x + 4;
       text.y = 2**scaleFactor * d.y;
     });
   }
@@ -222,10 +222,10 @@
                || -e.wheelDeltaY  // Webkit's mousewheel event
                || -e.wheelDelta;  // other's mousewheel event
     if (delta > 0) {
-      zoom(-0.1, cx_canvas, cy_canvas);
+      zoom(-0.25, cx_canvas, cy_canvas);
     }
     else if (delta < 0) {
-      zoom(0.1, cx_canvas, cy_canvas);
+      zoom(+0.25, cx_canvas, cy_canvas);
     }
   }
   app.view.addEventListener("wheel", onWheel);
